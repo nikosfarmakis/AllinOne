@@ -17,7 +17,7 @@ namespace AllinOne.Services.Implementations.PaginationStrategies
 
         public PaginationStrategyFactory(//IServiceProvider serviceProvider,//{1}
             ILogger<PaginationStrategyFactory<T>> logger,
-            IOptions<PaginationSection> options,
+            IOptions<PaginationSection> options, 
             IKeyedServiceProvider keyedProvider//{4}
             //IEnumerable<IPaginationStrategy<T, object>> strategies //{3}
             //OffsetPaginationStrategy<T, object> offset,//{2}
