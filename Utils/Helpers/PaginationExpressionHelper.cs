@@ -59,7 +59,7 @@ namespace AllinOne.Utils.Helpers
 
                 if (_cache.TryRetrieveKey<PropertyInfo>(cacheKey, out var prop))
                 {
-                    return prop;
+                    return prop; 
                 }
 
                 //prop = typeof(T).GetRuntimeProperty(propertyName); //does not have BindingFlags.IgnoreCase
