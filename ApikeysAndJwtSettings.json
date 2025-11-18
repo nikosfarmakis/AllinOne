@@ -1,0 +1,26 @@
+{
+  "JwtSettings": {
+    "Secret": "SECRET_KEY_12345678910!@#$%^&*()_+",
+    "Issuer": "AllinOneAPI",
+    "Audience": "AllinOneClients",
+    "ExpirationMinutes": 30,
+    "SlidingExpirationSeconds": 600,
+    "WhiteListEndPoints": [
+      "/api/auth/login"
+    ]
+  },
+  "AccessSection": {
+    "UsersWithAccess": {
+      "App1": {
+        "Apikey": "123",
+        "Username": "Username",
+        "Password": "Pass"
+      },
+      "App2": {
+        "Apikey": "456",
+        "Username": "AnotherUser",
+        "Password": "Secret"
+      }
+    }
+  }
+}
