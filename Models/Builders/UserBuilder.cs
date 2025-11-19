@@ -10,7 +10,6 @@ namespace AllinOne.Models.Builders
         //private readonly User _user = new();
         private string _firstName = string.Empty;
         private string _lastName = string.Empty;
-        private int _age;
         private UserRoles _role;
         private bool _isAdmin = false;
         private string _email = string.Empty;
@@ -64,20 +63,8 @@ namespace AllinOne.Models.Builders
             return this;
         }
 
-        public UserBuilder SetAge(int age)
-        {
-            if (age < 18)
-            {
-                _validationErrors.Add("Age cannot be less than 18.");
-            }
-
-            _age = age;
-            return this;
-        }
-
         public UserBuilder SetRole(UserRoles role)
         {
-            //_user.Role = role;
             if (role == UserRoles.Admin)
             {
                 _isAdmin = true;
@@ -97,7 +84,6 @@ namespace AllinOne.Models.Builders
             {
                 FirstName = _firstName,
                 LastName = _lastName,
-                Age = _age,
                 Role = _role,
                 IsAdmin = _isAdmin,
                 Phone = _phone,
