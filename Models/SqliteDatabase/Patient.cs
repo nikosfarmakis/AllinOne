@@ -9,7 +9,7 @@ namespace AllinOne.Models.SqliteDatabase
     public class Patient : Person
     {
         public string Notes { get; set; }
-        public int AMKA { get; set; }
+        public string AMKA { get; set; }
         public PatientMedicalInfo PatientMedicalInfo { get; set; } = new();
     }
 }

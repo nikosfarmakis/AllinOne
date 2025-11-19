@@ -230,6 +230,42 @@ namespace AllinOne.Utils.Extensions
 
             return true;
         }
-    }
 
+        public static bool IsValidAMKA(this string amka, out string error, DateTime? dateOfBirth = null)
+        {
+            error = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(amka))
+            {
+                error = "AMKA cannot be empty.";
+                return false;
+            }
+
+            if (amka.Length != 11)
+            {
+                error = "AMKA must contain exactly 11 digits.";
+                return false;
+            }
+
+            if (!amka.All(char.IsDigit))
+            {
+                error = "AMKA must contain only numeric characters.";
+                return false;
+            }
+
+            // If date of birth is supplied, validate consistency
+            if (dateOfBirth != null)
+            {
+                string dobPart = dateOfBirth.Value.ToString("ddMMyy");
+
+                if (!amka.StartsWith(dobPart))
+                {
+                    error = $"AMKA does not match the provided date of birth. Expected prefix: {dobPart}.";
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
 }

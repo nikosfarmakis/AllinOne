@@ -1,67 +1,13 @@
 ﻿using AllinOne.Constants;
 using AllinOne.Models.SqliteDatabase;
-using AllinOne.Models.SqliteDatabase.ValueObjects;
-using AllinOne.Utils.Extensions;
+using Microsoft.IdentityModel.Tokens.Experimental;
 
 namespace AllinOne.Models.Builders
 {
-    public class UserBuilder
-    {
-        //private readonly User _user = new();
-        private string _firstName = string.Empty;
-        private string _lastName = string.Empty;
+    public class UserBuilder : PersonBuilder
+    {   
         private UserRoles _role;
         private bool _isAdmin = false;
-        private string _email = string.Empty;
-        private string _phone = string.Empty;
-        private Address _homeAddress;
-
-        private readonly List<string> _validationErrors = new();
-
-        public UserBuilder SetHomeAddress(Address homeAddress)
-        {
-            _homeAddress = homeAddress;
-            return this;
-        }
-        public UserBuilder SetFirstName(string name)
-        {
-            if (!name.ValidateName("First name", out string error))
-            {
-                _validationErrors.Add(error);
-            }
-
-            _firstName = name;
-            return this;
-        }
-
-        public UserBuilder SetLastName(string name)
-        {
-            if (!name.ValidateName("Last name", out string error))
-            {
-                _validationErrors.Add(error);
-            }
-            _lastName = name;
-            return this;
-        }
-
-        public UserBuilder SetEmail(string email)
-        {
-            if (!email.IsValidEmail(out List<string> validationErrors))
-            {
-                _validationErrors.AddRange(validationErrors);
-            }
-            _email = email.Trim();
-            return this;
-        }
-        public UserBuilder SetPhone(string phone)
-        {
-            if (!phone.IsValidPhone(out string error))
-            {
-                _validationErrors.Add(error);
-            }
-            _phone = phone;
-            return this;
-        }
 
         public UserBuilder SetRole(UserRoles role)
         {
@@ -72,7 +18,6 @@ namespace AllinOne.Models.Builders
             _role = role;
             return this;
         }
-
         public User Build()
         {
             if (_validationErrors.Count > 0)
@@ -84,11 +29,12 @@ namespace AllinOne.Models.Builders
             {
                 FirstName = _firstName,
                 LastName = _lastName,
-                Role = _role,
-                IsAdmin = _isAdmin,
+                DateOfBirth = _dateOfBirth,
                 Phone = _phone,
                 Email = _email,
-                HomeAddress = _homeAddress
+                HomeAddress = _homeAddress,
+                Role = _role,
+                IsAdmin = _isAdmin
             };
         }
     }
