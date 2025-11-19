@@ -1,7 +1,8 @@
-﻿using AllinOne.MemoryCache.Interfaces;
-using AllinOne.Models.Configuration;
+﻿using AllinOne.Models.Configuration;
 using AllinOne.Services.Interfaces.PaginationStrategies;
 using Microsoft.Extensions.Options;
+using AllinOne.Constants;
+using Microsoft.OpenApi.Extensions;
 
 namespace AllinOne.Services.Implementations.PaginationStrategies
 {
@@ -38,7 +39,8 @@ namespace AllinOne.Services.Implementations.PaginationStrategies
             try
             {
                 //------------------------------- 4
-                var key = totalRecords <= _options.CursorΒasedAfterRecords ? "offset" : "cursor";
+                var key = totalRecords <= _options.CursorΒasedAfterRecords ?
+                    PaginationStrategiesCategs.Offset.GetDisplayName() : PaginationStrategiesCategs.Cursor.GetDisplayName();
                 return _keyedProvider.GetRequiredKeyedService<IPaginationStrategy<T, TOut>>(key);
                 //------------------------------- 1
                 /*  bool useOffset = totalRecords <= _options.CursorΒasedAfterRecords;

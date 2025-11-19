@@ -1,4 +1,5 @@
-﻿using AllinOne.MemoryCache.Implementations;
+﻿using AllinOne.Constants;
+using AllinOne.MemoryCache.Implementations;
 using AllinOne.MemoryCache.Interfaces;
 using AllinOne.Models.Requests;
 using AllinOne.Models.Responses;
@@ -14,7 +15,7 @@ using AllinOne.Services.Interfaces.PaginationStrategies;
 using AllinOne.Utils.Helpers;
 using AllinOne.Utils.Mappers;
 using AllinOne.Utils.Mappers.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Extensions;
 
 namespace AllinOne.Services.Extensions
 {
@@ -22,15 +23,6 @@ namespace AllinOne.Services.Extensions
     {
         public static IServiceCollection AddProjectServices(this IServiceCollection services)
         {
-
-            // Services
-
-            //AddTransient
-            #region Mappers
-            services.AddTransient<IEntityMapper<Order, OrderResponse, CreateOrderRequest, UpdateOrderRequest>, OrderMapper>(); 
-            //services.AddTransient(typeof(IEntityMapper<Order, OrderResponse, CreateOrderRequest, UpdateOrderRequest>),typeof(OrderMapper));
-            #endregion
-
             //Scoped
             services.AddScoped(typeof(IPaginationService<>), typeof(PaginationService<>));
             services.AddScoped(typeof(IEntityHandlingService<,>), typeof(EntityHandlingService<,>));
@@ -38,41 +30,43 @@ namespace AllinOne.Services.Extensions
             services.AddScoped<IValidationService, ValidationApiKeyService>();
             services.AddScoped<IRedisAdminService, RedisAdminService>();
 
+            //Singleton
+            services.AddSingleton<IJwtService, JwtService>();
+
+            #region Mappers
+            //Transient
+            services.AddTransient<IEntityMapper<Order, OrderResponse, CreateOrderRequest, UpdateOrderRequest>, OrderMapper>(); 
+            #endregion
 
             #region Pagination Strategies
+            //Scoped
             services.AddScoped(typeof(IPaginationStrategyFactory<>), typeof(PaginationStrategyFactory<>));
-
-            //services.AddScoped(typeof(OffsetPaginationStrategy<,>)); //PaginationStrategyFactory {3}
-            //services.AddScoped(typeof(CursorPaginationStrategy<,>)); //PaginationStrategyFactory {3}
 
             /// IKeyedServiceProvider -> DI helper interface IKeyedService =>> public interface IKeyedServiceProvider : IServiceProvider
             /// cast IServiceProvider -> IKeyedServiceProvider
             services.AddScoped<IKeyedServiceProvider>(sp => (IKeyedServiceProvider)sp); //ProviderPaginationStrategyFactory {4}
-            services.AddKeyedTransient(typeof(IPaginationStrategy<,>), "offset", typeof(OffsetPaginationStrategy<,>)); //PaginationStrategyFactory {4}
-            services.AddKeyedTransient(typeof(IPaginationStrategy<,>), "cursor", typeof(CursorPaginationStrategy<,>)); //PaginationStrategyFactory {4}
-
+            services.AddKeyedScoped(typeof(IPaginationStrategy<,>), PaginationStrategiesCategs.Offset.GetDisplayName(), typeof(OffsetPaginationStrategy<,>)); //PaginationStrategyFactory {4}
+            services.AddKeyedScoped(typeof(IPaginationStrategy<,>), PaginationStrategiesCategs.Cursor.GetDisplayName(), typeof(CursorPaginationStrategy<,>)); //PaginationStrategyFactory {4}
+            //services.AddScoped(typeof(OffsetPaginationStrategy<,>)); //PaginationStrategyFactory {3}
+            //services.AddScoped(typeof(CursorPaginationStrategy<,>)); //PaginationStrategyFactory {3}
             services.AddScoped(typeof(PaginationExpressionHelper<>));
-
             #endregion
 
             #region repositories
+            //Scoped
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped(typeof(ISqliteRepository<>), typeof(SqliteRepository<>));
-
             #endregion
 
             #region cache Services
+            //Singleton
             services.AddSingleton<ICustomCacheKeyHandler, CustomCacheKeyHandler>();
             services.AddSingleton<IRedisCacheKeyHandlerService, RedisCacheKeyHandlerService>();
-
             #endregion
 
-            //Singleton
-            services.AddSingleton<IJwtService, JwtService>();
-
-            //HostedService
+            #region HostedService
             services.AddHostedService<ValidationStartupCheck>();
-
+            #endregion
 
             return services;
         }
