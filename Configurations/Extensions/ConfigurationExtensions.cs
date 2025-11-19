@@ -10,7 +10,7 @@ namespace AllinOne.Configurations.Extensions
         {
             var configBuilder = new ConfigurationBuilder()
                 .AddConfiguration(configuration) //default appsettings.json
-                .AddJsonFile("ApikeysAndJwtSettings.json", optional: true, reloadOnChange: true)             // add ApikeysAndJwtSettings.json
+                .AddJsonFile("Configurations/ApikeysAndJwtSettings.json", optional: true, reloadOnChange: true) 
                 .Build();
 
 
