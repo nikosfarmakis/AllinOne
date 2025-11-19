@@ -10,9 +10,9 @@ namespace AllinOne.Utils.Extensions
     public static class StringExtensions
     {
         public static string EncodeToBase64(this string dataSTR)
-        { 
+        {
             return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(dataSTR));
-        } 
+        }
 
         public static string DecodeFromBase64(this string dataSTR)
         {
@@ -181,5 +181,55 @@ namespace AllinOne.Utils.Extensions
             }
             return true;
         }
+
+        public static bool IsValidPhone(this string phone, out string error)
+        {
+            error = null;
+
+            if (string.IsNullOrWhiteSpace(phone))
+            {
+                error = "Phone number cannot be empty.";
+                return false;
+            }
+
+            string cleaned = Regex.Replace(phone, @"[\s\-\(\)\.]", "");
+
+            if (cleaned.StartsWith("+"))
+            {
+                string digitsOnly = cleaned.Substring(1);
+
+                // After the "+" MUST be digits only
+                if (!Regex.IsMatch(digitsOnly, @"^\d+$"))
+                {
+                    error = "Phone number after '+' must contain digits only.";
+                    return false;
+                }
+
+                if (cleaned.Length != 13)
+                {
+                    error = "Phone number with '+' must be exactly 13 characters long.";
+                    return false;
+                }
+
+                return true;
+            }
+
+            // Case 2: No "+" → must be digits only
+            if (!Regex.IsMatch(cleaned, @"^\d+$"))
+            {
+                error = "Phone number must contain digits only.";
+                return false;
+            }
+
+            // Must be exactly 10 digits if no +
+            if (cleaned.Length != 10)
+            {
+                error = "Phone number must be exactly 10 digits long.";
+                return false;
+            }
+
+            return true;
+        }
     }
+
 }

@@ -1,9 +1,7 @@
 ﻿using AllinOne.Constants;
 using AllinOne.Models.SqliteDatabase;
-using AllinOne.Models.ValueObjects;
+using AllinOne.Models.SqliteDatabase.ValueObjects;
 using AllinOne.Utils.Extensions;
-using FluentValidation.Validators;
-using System.Text.RegularExpressions;
 
 namespace AllinOne.Models.Builders
 {
@@ -32,10 +30,8 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.Add(error);
             }
-            else
-            {
-                _firstName = name;
-            }
+
+            _firstName = name;
             return this;
         }
 
@@ -45,10 +41,7 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.Add(error);
             }
-            else
-            {
-                _lastName = name;
-            }
+            _lastName = name;
             return this;
         }
 
@@ -58,14 +51,15 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.AddRange(validationErrors);
             }
-            else
-            {
-                _email = email.Trim();
-            }
+            _email = email.Trim();
             return this;
         }
         public UserBuilder SetPhone(string phone)
         {
+            if (!phone.IsValidPhone(out string error))
+            {
+                _validationErrors.Add(error);
+            }
             _phone = phone;
             return this;
         }
@@ -76,10 +70,8 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.Add("Age cannot be less than 18.");
             }
-            else
-            {
-                _age = age;
-            }
+
+            _age = age;
             return this;
         }
 

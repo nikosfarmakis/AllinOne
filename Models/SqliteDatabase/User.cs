@@ -1,5 +1,5 @@
 ﻿using AllinOne.Constants;
-using AllinOne.Models.ValueObjects;
+using AllinOne.Models.SqliteDatabase.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,12 +22,11 @@ namespace AllinOne.Models.SqliteDatabase
         [Range(18, 120)]
         [Required]
         public int Age { get; internal set; }
-        [Required]
         [MaxLength(200)]
-        //[EmailAddress]// only MVC Forms, Blazor, Razor
+        [CustomValidation(typeof(UserValidators), nameof(UserValidators.ValidateEmail))]
         public string Email { get; internal set; }
         [MaxLength(13)]
-        [Phone]
+        [CustomValidation(typeof(UserValidators), nameof(UserValidators.ValidatePhone))]
         public string Phone { get; internal set; }
         [Required]
         public Address HomeAddress { get; set; } = new();
@@ -35,11 +34,11 @@ namespace AllinOne.Models.SqliteDatabase
         public bool IsAdmin { get; internal set; }
         [Required]
         public bool IsDeleted { get; set; } = false;
-        //calculated at runtime
+        ///calculated at runtime
         [NotMapped] 
-        //It is at the base
-        //It is automatically calculated by the database every time a SELECT or UPDATE
-        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)] 
+        ///It is at the base
+        ///It is automatically calculated by the database every time a SELECT or UPDATE
+        ///[DatabaseGenerated(DatabaseGeneratedOption.Computed)] 
         public string DisplayName => $"{FirstName} {LastName}";
 
     }

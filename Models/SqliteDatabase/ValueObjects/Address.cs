@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace AllinOne.Models.ValueObjects
+namespace AllinOne.Models.SqliteDatabase.ValueObjects
 {
     [Owned] 
     public class Address
