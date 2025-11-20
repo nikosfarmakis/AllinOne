@@ -4,17 +4,16 @@ namespace AllinOne.Models.Configuration
 {
     public class PaginationSection
     {
-        [Required]
+        [Range(1, 1000)]
         public int CursorΒasedAfterRecords {  get; set; }
-        [Required]
+        [Range(1, 100)]
         public int DefaultPageSize {  get; set; }
-        [Required]
+        [Range(1, 100)]
         public int MaxPageSize {  get; set; }
-        [Required]
+        [Range(1, 100)]
         public int MinPageSize { get; set; }
         [Required]
         public string DefaultSortField { get; set; }
-        [Required]
         public bool DefaultSortDirectionAsc { get; set; }
     }
 }

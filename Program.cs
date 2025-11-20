@@ -37,7 +37,7 @@ try
 
     builder.Services.AddSqliteDatabase(builder.Configuration);
 
-    builder.Services.AddRedisCache(builder.Configuration);
+    builder.Services.AddRedisCache();
 
     builder.Services.AddCustomCacheMemoryKeysHandler();
 

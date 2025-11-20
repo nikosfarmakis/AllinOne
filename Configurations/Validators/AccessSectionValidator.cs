@@ -3,18 +3,16 @@ using Microsoft.Extensions.Options;
 
 namespace AllinOne.Configurations.Validators
 {
-    public class UsersWithAccessValidator : IValidateOptions<AccessSection>
+    public class AccessSectionValidator : IValidateOptions<AccessSection>
     {
         public ValidateOptionsResult Validate(string? name, AccessSection options)
         {
             if (options == null)
-            {
-                return ValidateOptionsResult.Fail("ValidationUsersSection configuration is missing.");
-            }
+                return ValidateOptionsResult.Fail("AccessSettings configuration is missing.");
 
             if (options.UsersWithAccess == null || !options.UsersWithAccess.Any())
             {
-                return ValidateOptionsResult.Fail("At least one validation user must be defined in ValidationSection.");
+                return ValidateOptionsResult.Fail("At least one validation user must be defined in UsersWithAccess.");
             }
 
             foreach (var (key, user) in options.UsersWithAccess)

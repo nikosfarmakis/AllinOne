@@ -29,7 +29,15 @@ namespace AllinOne.Models.Builders
         }
         public PersonBuilder SetHomeAddress(Address homeAddress)
         {
-            _homeAddress = homeAddress;
+            //TODO Address VALIDATOR
+            if (homeAddress == null)
+            {
+                _validationErrors.Add("Patient home address  cannot be null.");
+            }
+            else
+            {
+                _homeAddress = homeAddress;
+            }
             return this;
         }
         public PersonBuilder SetFirstName(string name)

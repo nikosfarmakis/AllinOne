@@ -19,19 +19,22 @@ namespace AllinOne.Configurations.Extensions
 
             //services.Configure<JwtSettings>(configBuilder.GetSection("JwtSettings"));
             services.AddOptions<JwtSection>().Bind(configBuilder.GetSection("JwtSettings")).ValidateDataAnnotations().ValidateOnStart();
+            services.AddSingleton<IValidateOptions<JwtSection>, JwtSectionValidator>();
 
-            //services.Configure<PaginationSection>(configBuilder.GetSection("PaginationSection"));
-            services.AddOptions<PaginationSection>()
-                    .Bind(configBuilder.GetSection("PaginationSettings")).ValidateDataAnnotations().ValidateOnStart();
+            services.AddOptions<PaginationSection>().Bind(configBuilder.GetSection("PaginationSettings")).ValidateDataAnnotations().ValidateOnStart();
+            services.AddSingleton<IValidateOptions<PaginationSection>, PaginationSectionValidator>();
 
-            services.AddOptions<UserPasswordSection>()
-                    .Bind(configBuilder.GetSection("UserPasswordSettings")).ValidateDataAnnotations().ValidateOnStart();
+            services.AddOptions<UserPasswordSection>().Bind(configBuilder.GetSection("UserPasswordSettings")).ValidateDataAnnotations().ValidateOnStart(); 
+            services.AddSingleton<IValidateOptions<UserPasswordSection>, UserPasswordSectionValidator>();
+
+            services.AddOptions<RedisSection>().Bind(configBuilder.GetSection("RedisSettings")).ValidateDataAnnotations().ValidateOnStart();
+            services.AddSingleton<IValidateOptions<RedisSection>, RedisSectionValidator>();
 
             //DynamicConfigurations
 
             services.Configure<AccessSection>(configBuilder.GetSection("AccessSettings"));
-            // Validation =>  UsersWithAccess| IOptionsMonitor<AccessSection> which is a singleton
-            services.AddSingleton<IValidateOptions<AccessSection>, UsersWithAccessValidator>(); 
+            /// Validation =>  UsersWithAccess| IOptionsMonitor<AccessSection> which is a singleton
+            services.AddSingleton<IValidateOptions<AccessSection>, AccessSectionValidator>(); 
 
 
             return services;

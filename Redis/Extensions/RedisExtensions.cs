@@ -1,32 +1,54 @@
 ﻿
+using AllinOne.Models.Configuration;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
 namespace AllinOne.Redis.Extensions
 {
     public static class RedisExtensions
     {
-        public static IServiceCollection AddRedisCache(this IServiceCollection services, IConfiguration configuration)
+        ///singleton to avoid opening multiple connections and have consistent access throughout the application
+        ///StackExchange.Redis manages connection pooling
+        public static IServiceCollection AddRedisCache(this IServiceCollection services)
         {
-            var redisSection = configuration.GetSection("RedisSettings");
-            var enabled = redisSection.GetValue<bool>("Enabled");
-
-            if (!enabled)
+            services.AddSingleton<IDistributedCache>(sp =>
             {
-                return services; 
-            }
+                var settings = sp.GetRequiredService<IOptions<RedisSection>>().Value;
 
-            var connectionString = redisSection.GetValue<string>("Configuration");
-            var instanceName = redisSection.GetValue<string>("InstanceName");
+                if (!settings.Enabled)
+                {
+                    return null;
+                }
 
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = connectionString;
-                options.InstanceName = instanceName;
+                return new RedisCache(new RedisCacheOptions
+                {
+                    Configuration = settings.Configuration,
+                    InstanceName = settings.InstanceName
+                });
             });
 
-            // Register IConnectionMultiplexer for low-level Redis operations (AdminService)
+            /// Register IConnectionMultiplexer for low-level access Redis operations AdminService
+            /// Connection pooling is done inside the multiplexer
+            /// singleton to avoid opening multiple connections and have consistent access throughout the application
             services.AddSingleton<IConnectionMultiplexer>(sp =>
-                ConnectionMultiplexer.Connect(connectionString));
+            {
+                var settings = sp.GetRequiredService<IOptions<RedisSection>>().Value;
+
+                if (!settings.Enabled)
+                {
+                    return null;
+                }
+
+                var configOptions = ConfigurationOptions.Parse(settings.Configuration);
+                configOptions.Ssl = settings.Ssl;
+                configOptions.AbortOnConnectFail = settings.AbortOnConnectFail;
+                configOptions.ConnectTimeout = settings.ConnectTimeout;
+                configOptions.SyncTimeout = settings.SyncTimeout;
+
+                return ConnectionMultiplexer.Connect(configOptions);
+            });
 
             return services;
         }
