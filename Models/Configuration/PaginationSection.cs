@@ -12,7 +12,6 @@ namespace AllinOne.Models.Configuration
         public int MaxPageSize {  get; set; }
         [Range(1, 100)]
         public int MinPageSize { get; set; }
-        [Required]
         public string DefaultSortField { get; set; }
         public bool DefaultSortDirectionAsc { get; set; }
     }

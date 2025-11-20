@@ -1,4 +1,5 @@
 ﻿using AllinOne.Models.Configuration;
+using AllinOne.Utils.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace AllinOne.Configurations.Validators
@@ -17,11 +18,11 @@ namespace AllinOne.Configurations.Validators
 
             foreach (var (key, user) in options.UsersWithAccess)
             {
-                if (string.IsNullOrWhiteSpace(user.Username))
+                if (user.Username.IsNullOrEmptyOrWhitespace())
                     return ValidateOptionsResult.Fail($"Validation user '{key}' is missing Username.");
-                if (string.IsNullOrWhiteSpace(user.Password))
+                if (user.Password.IsNullOrEmptyOrWhitespace())
                     return ValidateOptionsResult.Fail($"Validation user '{key}' is missing Password.");
-                if (string.IsNullOrWhiteSpace(user.Apikey))
+                if (user.Apikey.IsNullOrEmptyOrWhitespace())
                     return ValidateOptionsResult.Fail($"Validation user '{key}' is missing Apikey.");
             }
 

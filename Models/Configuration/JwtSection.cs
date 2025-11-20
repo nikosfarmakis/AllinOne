@@ -4,12 +4,9 @@ namespace AllinOne.Models.Configuration
 {
     public class JwtSection
     {
-        [Required]
-        public string Secret { get; set; } = string.Empty;
-        [Required]
-        public string Issuer { get; set; } = string.Empty;
-        [Required]
-        public string Audience { get; set; } = string.Empty;
+        public string Secret { get; set; }
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
         [Range(1, 120)]
         public int ExpirationMinutes { get; set; } = 30;  // default
         [Range(60, 1800)]

@@ -1,4 +1,5 @@
 ﻿using AllinOne.Models.Configuration;
+using AllinOne.Utils.Extensions;
 using Microsoft.Extensions.Options;
 
 namespace AllinOne.Configurations.Validators
@@ -10,20 +11,30 @@ namespace AllinOne.Configurations.Validators
             if (options == null)
                 return ValidateOptionsResult.Fail("RedisSettings cannot be null.");
 
-            if (options.Enabled)
-            {
-                /*if (string.IsNullOrWhiteSpace(options.Configuration))
-                    return ValidateOptionsResult.Fail("Redis configuration string cannot be empty when Redis is enabled.");
+            if (!options.Enabled)
+                return ValidateOptionsResult.Success;
 
-                if (string.IsNullOrWhiteSpace(options.InstanceName))
-                    return ValidateOptionsResult.Fail("Redis instance name cannot be empty when Redis is enabled.");
+            if (options.Configuration.IsNullOrEmptyOrWhitespace())
+                return ValidateOptionsResult.Fail("Redis Configuration must be provided when Redis is enabled.");
 
-                if (options.ConnectTimeout <= 0)
-                    return ValidateOptionsResult.Fail("ConnectTimeout must be greater than zero.");
+            if (options.InstanceName.IsNullOrEmptyOrWhitespace())
+                return ValidateOptionsResult.Fail("Redis InstanceName must be provided when Redis is enabled.");
 
-                if (options.SyncTimeout <= 0)
-                    return ValidateOptionsResult.Fail("SyncTimeout must be greater than zero.");*/
-            }
+            if (options.AbortOnConnectFail == null)
+                return ValidateOptionsResult.Fail("Redis AbortOnConnectFail must be defined when Redis is enabled.");
+
+            if (options.ConnectTimeout == null)
+                return ValidateOptionsResult.Fail("Redis ConnectTimeout must be defined when Redis is enabled.");
+
+            if (options.ConnectTimeout <= 100 || options.ConnectTimeout >= 30000)
+                return ValidateOptionsResult.Fail("Redis ConnectTimeout must be between 100 and 30000 milliseconds.");
+
+            if (options.SyncTimeout == null)
+                return ValidateOptionsResult.Fail("Redis SyncTimeout must be defined when Redis is enabled.");
+
+            if (options.SyncTimeout <= 100 || options.SyncTimeout >= 30000)
+                return ValidateOptionsResult.Fail("Redis SyncTimeout must be between 100 and 30000 milliseconds.");
+
 
             return ValidateOptionsResult.Success;
         }

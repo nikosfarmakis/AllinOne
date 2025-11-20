@@ -306,5 +306,10 @@ namespace AllinOne.Utils.Extensions
 
             return true;
         }
+        public static bool IsNullOrEmptyOrWhitespace(this string str)
+        {
+           return string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str);
+        }
+
     }
 }
