@@ -10,10 +10,10 @@ namespace AllinOne.Services.Implementations
 {
     public class JwtService : IJwtService
     {
-        private readonly JwtSettings _settings;
+        private readonly JwtSection _settings;
         private readonly ILogger<JwtService> _logger;
 
-        public JwtService(IOptions<JwtSettings> options, ILogger<JwtService> logger)
+        public JwtService(IOptions<JwtSection> options, ILogger<JwtService> logger)
         {
             _settings = options.Value;
             _logger = logger;

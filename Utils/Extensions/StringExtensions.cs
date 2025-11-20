@@ -1,9 +1,4 @@
-﻿using FluentValidation.Validators;
-using Microsoft.IdentityModel.Tokens.Experimental;
-using System.Globalization;
-using System.Net;
-using System.Net.Mail;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace AllinOne.Utils.Extensions
 {
@@ -159,7 +154,7 @@ namespace AllinOne.Utils.Extensions
             return errors.Count == 0;
         }
 
-        public static bool ValidateName(this string name, string field, out string error)
+        public static bool IsValidateName(this string name, string field, out string error)
         {
             error = null;
             if (string.IsNullOrWhiteSpace(name))
@@ -263,6 +258,50 @@ namespace AllinOne.Utils.Extensions
                     error = $"AMKA does not match the provided date of birth. Expected prefix: {dobPart}.";
                     return false;
                 }
+            }
+
+            return true;
+        }
+
+        public static bool IsValidPassword(this string pass,out string error,int minLength, int maxLength,
+                    bool requireLettersChar = true,bool requireNumbers = true, bool requireSpecialChar = true)
+        {
+            error = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(pass))
+            {
+                error = "Password cannot be empty.";
+                return false;
+            }
+
+            if (pass.Length < minLength)
+            {
+                error = $"Password must be at least {minLength} characters long.";
+                return false;
+            }
+
+            if (pass.Length > maxLength)
+            {
+                error = $"Password cannot exceed {maxLength} characters.";
+                return false;
+            }
+
+            if (requireLettersChar && !pass.Any(char.IsLetter))
+            {
+                error = "Password must contain at least one letter.";
+                return false;
+            }
+
+            if (requireNumbers && !pass.Any(char.IsDigit))
+            {
+                error = "Password must contain at least one number.";
+                return false;
+            }
+
+            if (requireSpecialChar && pass.All(char.IsLetterOrDigit))
+            {
+                error = "Password must contain at least one special character.";
+                return false;
             }
 
             return true;

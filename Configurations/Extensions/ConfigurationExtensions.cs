@@ -10,27 +10,26 @@ namespace AllinOne.Configurations.Extensions
         {
             var configBuilder = new ConfigurationBuilder()
                 .AddConfiguration(configuration) //default appsettings.json
-                .AddJsonFile("Configurations/ApikeysAndJwtSettings.json", optional: true, reloadOnChange: true) 
+                .AddJsonFile("Configurations/ApikeysAndJwtSettings.json", optional: false, reloadOnChange: true) 
+                .AddJsonFile("Configurations/UserPasswordSettings.json", optional: false, reloadOnChange: false)
                 .Build();
 
 
             //StaticConfigurations
 
             //services.Configure<JwtSettings>(configBuilder.GetSection("JwtSettings"));
-            services.AddOptions<JwtSettings>().Bind(configBuilder.GetSection("JwtSettings"))
-                    .ValidateDataAnnotations()
-                    .ValidateOnStart();
+            services.AddOptions<JwtSection>().Bind(configBuilder.GetSection("JwtSettings")).ValidateDataAnnotations().ValidateOnStart();
 
-            
             //services.Configure<PaginationSection>(configBuilder.GetSection("PaginationSection"));
             services.AddOptions<PaginationSection>()
-                    .Bind(configBuilder.GetSection("PaginationSection"))
-                    .ValidateDataAnnotations()
-                    .ValidateOnStart();
+                    .Bind(configBuilder.GetSection("PaginationSettings")).ValidateDataAnnotations().ValidateOnStart();
+
+            services.AddOptions<UserPasswordSection>()
+                    .Bind(configBuilder.GetSection("UserPasswordSettings")).ValidateDataAnnotations().ValidateOnStart();
 
             //DynamicConfigurations
 
-            services.Configure<AccessSection>(configBuilder.GetSection("AccessSection"));
+            services.Configure<AccessSection>(configBuilder.GetSection("AccessSettings"));
             // Validation =>  UsersWithAccess| IOptionsMonitor<AccessSection> which is a singleton
             services.AddSingleton<IValidateOptions<AccessSection>, UsersWithAccessValidator>(); 
 

@@ -9,7 +9,7 @@
       "/api/auth/login"
     ]
   },
-  "AccessSection": {
+  "AccessSettings": {
     "UsersWithAccess": {
       "App1": {
         "Apikey": "123",

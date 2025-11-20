@@ -22,7 +22,10 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.Add(error);
             }
-            _AMKA = AMKA;
+            else
+            {
+                _AMKA = AMKA;
+            }
             return this;
         }
         public PatientBuilder SetPatientMedicalInfo(PatientMedicalInfo info)
@@ -32,8 +35,11 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.Add("Patient medical information cannot be null.");
             }
+            else
+            {
+                _patientMedicalInfo = info;
+            }
 
-            _patientMedicalInfo = info;
             return this;
         }
 

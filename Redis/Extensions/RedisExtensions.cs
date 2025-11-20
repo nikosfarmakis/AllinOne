@@ -7,7 +7,7 @@ namespace AllinOne.Redis.Extensions
     {
         public static IServiceCollection AddRedisCache(this IServiceCollection services, IConfiguration configuration)
         {
-            var redisSection = configuration.GetSection("Redis");
+            var redisSection = configuration.GetSection("RedisSettings");
             var enabled = redisSection.GetValue<bool>("Enabled");
 
             if (!enabled)

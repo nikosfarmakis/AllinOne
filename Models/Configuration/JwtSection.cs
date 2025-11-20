@@ -2,7 +2,7 @@
 
 namespace AllinOne.Models.Configuration
 {
-    public class JwtSettings
+    public class JwtSection
     {
         [Required]
         public string Secret { get; set; } = string.Empty;

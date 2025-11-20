@@ -12,7 +12,7 @@ namespace AllinOne.Middlewares
         private readonly RequestDelegate _next;
         private readonly IJwtService _jwtService;
         private readonly IRedisCacheKeyHandlerService _redis;
-        private readonly JwtSettings _jwtSettings;
+        private readonly JwtSection _jwtSection;
         private readonly ILogger<JwtService> _logger;
         private readonly IFeatureManagerSnapshot _features;
 
@@ -20,14 +20,14 @@ namespace AllinOne.Middlewares
         public JwtValidationMiddleware(RequestDelegate next
             , IJwtService jwtService,
             IRedisCacheKeyHandlerService redis,
-            IOptions<JwtSettings> jwtSettings,
+            IOptions<JwtSection> jwtSection,
             ILogger<JwtService> logge,
             IFeatureManagerSnapshot features)
         {
             _next = next;
             _jwtService = jwtService;
             _redis = redis;
-            _jwtSettings = jwtSettings.Value;
+            _jwtSection = jwtSection.Value;
             _logger = logge;
             _features = features;
         }
@@ -43,7 +43,7 @@ namespace AllinOne.Middlewares
             var requestPath = context.Request.Path.Value?.ToLower();
             try
             {
-                if (_jwtSettings.WhiteListEndPoints.Any(whitelistPath => 
+                if (_jwtSection.WhiteListEndPoints.Any(whitelistPath => 
                 requestPath.StartsWith(whitelistPath.ToLower(), StringComparison.OrdinalIgnoreCase)))
                 {
                     await _next(context);

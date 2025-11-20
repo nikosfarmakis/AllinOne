@@ -21,8 +21,10 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.Add(error);
             }
-
-            _dateOfBirth = dateOfBirth;
+            else
+            {
+                _dateOfBirth = dateOfBirth;
+            }
             return this;
         }
         public PersonBuilder SetHomeAddress(Address homeAddress)
@@ -32,22 +34,29 @@ namespace AllinOne.Models.Builders
         }
         public PersonBuilder SetFirstName(string name)
         {
-            if (!name.ValidateName("First name", out string error))
+            if (!name.IsValidateName("First name", out string error))
             {
                 _validationErrors.Add(error);
             }
+            else
+            {
+                _firstName = name;
+            }
 
-            _firstName = name;
             return this;
         }
 
         public PersonBuilder SetLastName(string name)
         {
-            if (!name.ValidateName("Last name", out string error))
+            if (!name.IsValidateName("Last name", out string error))
             {
                 _validationErrors.Add(error);
             }
-            _lastName = name;
+            else
+            {
+                _lastName = name;
+            }
+
             return this;
         }
 
@@ -57,7 +66,10 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.AddRange(validationErrors);
             }
-            _email = email.Trim();
+            else
+            {
+                _email = email;
+            }
             return this;
         }
         public PersonBuilder SetPhone(string phone)
@@ -66,7 +78,10 @@ namespace AllinOne.Models.Builders
             {
                 _validationErrors.Add(error);
             }
-            _phone = phone;
+            else
+            {
+                _phone = phone;
+            }
             return this;
         }
     }

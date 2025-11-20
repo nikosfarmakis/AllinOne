@@ -13,13 +13,13 @@ namespace AllinOne.Services.Implementations
     {
         private readonly AccessSection _accessSection;
         private readonly IJwtService _jwtService;
-        private readonly JwtSettings _jwtSettings;
+        private readonly JwtSection _jwtSettings;
         private readonly IRedisCacheKeyHandlerService _redis;
         private readonly ILogger<JwtService> _logger;
 
         public ValidationApiKeyService(IOptions<AccessSection> options,//singleton
             IJwtService jwtService,
-            IOptions<JwtSettings> jwtSettings,
+            IOptions<JwtSection> jwtSettings,
             IRedisCacheKeyHandlerService redis,
             ILogger<JwtService> logger
             )

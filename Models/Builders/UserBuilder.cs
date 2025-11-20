@@ -1,6 +1,8 @@
 ﻿using AllinOne.Constants;
+using AllinOne.Models.Configuration;
 using AllinOne.Models.SqliteDatabase;
-using Microsoft.IdentityModel.Tokens.Experimental;
+using AllinOne.Utils.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace AllinOne.Models.Builders
 {
@@ -8,6 +10,28 @@ namespace AllinOne.Models.Builders
     {   
         private UserRoles _role;
         private bool _isAdmin = false;
+        private string _password;
+        private readonly UserPasswordSection _uPassSection;
+
+
+        public UserBuilder(IOptions<UserPasswordSection> userPasswordSection) 
+        {
+            _uPassSection = userPasswordSection.Value;
+        }
+
+        public UserBuilder SetPassword(string password)
+        {
+            if (!password.IsValidPassword(out string error, _uPassSection.MinLength, _uPassSection.MaxLength,
+                _uPassSection.RequireLettersChar, _uPassSection.RequireNumbers, _uPassSection.RequireSpecialChar))
+            {
+                _validationErrors.Add(error);
+            }
+            else
+            {
+                _password = password;
+            }
+            return this;
+        }
 
         public UserBuilder SetRole(UserRoles role)
         {
@@ -34,7 +58,8 @@ namespace AllinOne.Models.Builders
                 Email = _email,
                 HomeAddress = _homeAddress,
                 Role = _role,
-                IsAdmin = _isAdmin
+                IsAdmin = _isAdmin,
+                Password =_password
             };
         }
     }
