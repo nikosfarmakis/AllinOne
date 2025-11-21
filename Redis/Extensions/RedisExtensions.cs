@@ -43,9 +43,9 @@ namespace AllinOne.Redis.Extensions
 
                 var configOptions = ConfigurationOptions.Parse(settings.Configuration);
                 configOptions.Ssl = settings.Ssl;
-                configOptions.AbortOnConnectFail = settings.AbortOnConnectFail;
-                configOptions.ConnectTimeout = settings.ConnectTimeout;
-                configOptions.SyncTimeout = settings.SyncTimeout;
+                configOptions.AbortOnConnectFail = settings.AbortOnConnectFail!.Value; ;
+                configOptions.ConnectTimeout = settings.ConnectTimeout!.Value; ;
+                configOptions.SyncTimeout = settings.SyncTimeout!.Value; ;
 
                 return ConnectionMultiplexer.Connect(configOptions);
             });
