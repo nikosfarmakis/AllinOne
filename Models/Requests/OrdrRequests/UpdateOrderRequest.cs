@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AllinOne.Models.Requests
+namespace AllinOne.Models.Requests.OrdrRequests
 {
     public class UpdateOrderRequest
     {

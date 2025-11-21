@@ -1,7 +1,7 @@
 ﻿using AllinOne.Constants;
 using AllinOne.MemoryCache.Implementations;
 using AllinOne.MemoryCache.Interfaces;
-using AllinOne.Models.Requests;
+using AllinOne.Models.Requests.OrdrRequests;
 using AllinOne.Models.Responses;
 using AllinOne.Models.SqliteEntities;
 using AllinOne.Redis.Service.Implementations;

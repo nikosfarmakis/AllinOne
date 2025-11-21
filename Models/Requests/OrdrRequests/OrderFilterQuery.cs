@@ -2,7 +2,7 @@
 using AllinOne.Repositories.Sqlite.Interface;
 using Newtonsoft.Json;
 
-namespace AllinOne.Models.Requests
+namespace AllinOne.Models.Requests.OrdrRequests
 {
     public sealed class OrderFilterQuery : IFilter<Order>
     {
