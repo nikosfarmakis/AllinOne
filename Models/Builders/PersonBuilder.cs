@@ -1,5 +1,4 @@
-﻿using AllinOne.Models.SqliteDatabase;
-using AllinOne.Models.SqliteDatabase.ValueObjects;
+﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
 using AllinOne.Utils.Extensions;
 
 namespace AllinOne.Models.Builders
@@ -11,7 +10,7 @@ namespace AllinOne.Models.Builders
         protected string _phone = string.Empty;
         protected string _email = string.Empty;
         protected DateTime _dateOfBirth;
-        protected Address _homeAddress;
+        protected Address? _homeAddress;
 
         protected readonly List<string> _validationErrors = new();
 
@@ -27,17 +26,20 @@ namespace AllinOne.Models.Builders
             }
             return this;
         }
-        public PersonBuilder SetHomeAddress(Address homeAddress)
+        public PersonBuilder SetHomeAddress(Address? homeAddress)
         {
             //TODO Address VALIDATOR
-            if (homeAddress == null)
+/*            if (homeAddress == null)
             {
                 _validationErrors.Add("Patient home address  cannot be null.");
             }
             else
             {
                 _homeAddress = homeAddress;
-            }
+            }*/
+
+            _homeAddress = homeAddress;
+
             return this;
         }
         public PersonBuilder SetFirstName(string name)

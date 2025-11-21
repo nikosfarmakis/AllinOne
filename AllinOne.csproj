@@ -42,7 +42,6 @@
     <Folder Include="logs\" />
     <Folder Include="logs\development\" />
     <Folder Include="logs\efcore\" />
-    <Folder Include="Models\Requests\OrderRequests\UserRequests\" />
   </ItemGroup>
 
 </Project>

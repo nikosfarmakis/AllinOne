@@ -1,8 +1,6 @@
-﻿using AllinOne.Constants;
-using AllinOne.Models.SqliteDatabase;
+﻿using AllinOne.Models.SqliteDatabase;
 using AllinOne.Models.SqliteDatabase.ValueObjects;
 using AllinOne.Utils.Extensions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AllinOne.Models.Builders
 {
@@ -10,7 +8,7 @@ namespace AllinOne.Models.Builders
     {
         private string _notes { get; set; }
         private string _AMKA { get; set; }
-        private PatientMedicalInfo _patientMedicalInfo { get; set; } = new();
+        private PatientMedicalInfo? _patientMedicalInfo { get; set; } = new();
         public PatientBuilder SetNotes(string notes)
         {
             _notes = notes?.Trim();
@@ -28,18 +26,18 @@ namespace AllinOne.Models.Builders
             }
             return this;
         }
-        public PatientBuilder SetPatientMedicalInfo(PatientMedicalInfo info)
+        public PatientBuilder SetPatientMedicalInfo(PatientMedicalInfo? info)
         {
             //TODO PatientMedicalInfo VALIDATOR
-            if (info == null)
-            {
-                _validationErrors.Add("Patient medical information cannot be null.");
-            }
-            else
-            {
-                _patientMedicalInfo = info;
-            }
-
+            /*            if (info == null)
+                        {
+                            _validationErrors.Add("Patient medical information cannot be null.");
+                        }
+                        else
+                        {
+                            _patientMedicalInfo = info;
+                        }*/
+            _patientMedicalInfo = info;
             return this;
         }
 

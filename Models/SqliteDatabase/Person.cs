@@ -1,5 +1,4 @@
 ﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,7 +17,7 @@ namespace AllinOne.Models.SqliteDatabase
         [MaxLength(200)]
         public string Email { get; internal set; }
         public DateTime DateOfBirth { get; internal set; }
-        public Address HomeAddress { get; set; } = new();
+        public Address? HomeAddress { get; set; }
         [Required]
         public bool IsDeleted { get; set; } = false;
         [NotMapped]
@@ -36,11 +35,11 @@ namespace AllinOne.Models.SqliteDatabase
                 return age;
             }
         }
-        ///calculated at runtime by C#
+        //calculated at runtime by C#
         [NotMapped]
-        ///It is at the base
-        ///It is automatically calculated by the database every time a SELECT or UPDATE
-        ///[DatabaseGenerated(DatabaseGeneratedOption.Computed)] 
+        //It is at the base
+        //It is automatically calculated by the database every time a SELECT or UPDATE
+        //[DatabaseGenerated(DatabaseGeneratedOption.Computed)] 
         public string DisplayName => $"{FirstName} {LastName}";
     }
 

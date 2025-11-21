@@ -1,6 +1,7 @@
 ﻿using AllinOne.Constants;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AllinOne.Models.SqliteDatabase
 {
@@ -10,7 +11,8 @@ namespace AllinOne.Models.SqliteDatabase
     {
         [Required]
         public UserRoles Role { get; internal set; }
-        public bool IsAdmin { get; internal set; }
+        [NotMapped]
+        public bool IsAdmin => Role == UserRoles.Admin;
         [Required]
         public string Password {  get; internal set; }
 

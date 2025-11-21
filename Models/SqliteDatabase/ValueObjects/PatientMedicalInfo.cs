@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AllinOne.Utils.Extensions;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,11 +9,11 @@ namespace AllinOne.Models.SqliteDatabase.ValueObjects
     public class PatientMedicalInfo
     {
         [NotMapped]
-        public bool HasDrugAllergies => !string.IsNullOrWhiteSpace(DrugAllergiesDescription);
+        public bool HasDrugAllergies => !DrugAllergiesDescription.IsNullOrEmptyOrWhitespace();
         [MaxLength(2000)]
         public string DrugAllergiesDescription { get; set; }
         [NotMapped]
-        public bool HasGeneralAllergies => !string.IsNullOrWhiteSpace(GeneralAllergiesDescription);
+        public bool HasGeneralAllergies => !GeneralAllergiesDescription.IsNullOrEmptyOrWhitespace();
         [MaxLength(2000)]
         public string GeneralAllergiesDescription { get; set; }
         [MaxLength(2000)]

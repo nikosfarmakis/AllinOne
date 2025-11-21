@@ -33,7 +33,7 @@ namespace AllinOne.Configurations.Extensions
             //DynamicConfigurations
 
             services.Configure<AccessSection>(configBuilder.GetSection("AccessSettings"));
-            /// Validation =>  UsersWithAccess| IOptionsMonitor<AccessSection> which is a singleton
+            // Validation =>  UsersWithAccess| IOptionsMonitor<AccessSection> which is a singleton
             services.AddSingleton<IValidateOptions<AccessSection>, AccessSectionValidator>(); 
 
 

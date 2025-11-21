@@ -9,8 +9,8 @@ namespace AllinOne.Redis.Extensions
 {
     public static class RedisExtensions
     {
-        ///singleton to avoid opening multiple connections and have consistent access throughout the application
-        ///StackExchange.Redis manages connection pooling
+        //singleton to avoid opening multiple connections and have consistent access throughout the application
+        //StackExchange.Redis manages connection pooling
         public static IServiceCollection AddRedisCache(this IServiceCollection services)
         {
             services.AddSingleton<IDistributedCache>(sp =>
@@ -29,9 +29,9 @@ namespace AllinOne.Redis.Extensions
                 });
             });
 
-            /// Register IConnectionMultiplexer for low-level access Redis operations AdminService
-            /// Connection pooling is done inside the multiplexer
-            /// singleton to avoid opening multiple connections and have consistent access throughout the application
+            // Register IConnectionMultiplexer for low-level access Redis operations AdminService
+            // Connection pooling is done inside the multiplexer
+            // singleton to avoid opening multiple connections and have consistent access throughout the application
             services.AddSingleton<IConnectionMultiplexer>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<RedisSection>>().Value;

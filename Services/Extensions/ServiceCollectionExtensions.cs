@@ -42,8 +42,8 @@ namespace AllinOne.Services.Extensions
             //Scoped
             services.AddScoped(typeof(IPaginationStrategyFactory<>), typeof(PaginationStrategyFactory<>));
 
-            /// IKeyedServiceProvider -> DI helper interface IKeyedService =>> public interface IKeyedServiceProvider : IServiceProvider
-            /// cast IServiceProvider -> IKeyedServiceProvider
+            // IKeyedServiceProvider -> DI helper interface IKeyedService =>> public interface IKeyedServiceProvider : IServiceProvider
+            // cast IServiceProvider -> IKeyedServiceProvider
             services.AddScoped<IKeyedServiceProvider>(sp => (IKeyedServiceProvider)sp); //ProviderPaginationStrategyFactory {4}
             services.AddKeyedScoped(typeof(IPaginationStrategy<,>), PaginationStrategiesCategs.Offset.GetDisplayName(), typeof(OffsetPaginationStrategy<,>)); //PaginationStrategyFactory {4}
             services.AddKeyedScoped(typeof(IPaginationStrategy<,>), PaginationStrategiesCategs.Cursor.GetDisplayName(), typeof(CursorPaginationStrategy<,>)); //PaginationStrategyFactory {4}

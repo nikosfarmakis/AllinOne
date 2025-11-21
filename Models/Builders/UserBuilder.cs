@@ -9,7 +9,6 @@ namespace AllinOne.Models.Builders
     public class UserBuilder : PersonBuilder
     {   
         private UserRoles _role;
-        private bool _isAdmin = false;
         private string _password;
         private readonly UserPasswordSection _uPassSection;
 
@@ -35,10 +34,6 @@ namespace AllinOne.Models.Builders
 
         public UserBuilder SetRole(UserRoles role)
         {
-            if (role == UserRoles.Admin)
-            {
-                _isAdmin = true;
-            }
             _role = role;
             return this;
         }
@@ -58,7 +53,6 @@ namespace AllinOne.Models.Builders
                 Email = _email,
                 HomeAddress = _homeAddress,
                 Role = _role,
-                IsAdmin = _isAdmin,
                 Password =_password
             };
         }

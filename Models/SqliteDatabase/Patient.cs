@@ -10,6 +10,6 @@ namespace AllinOne.Models.SqliteDatabase
     {
         public string Notes { get; set; }
         public string AMKA { get; set; }
-        public PatientMedicalInfo PatientMedicalInfo { get; set; } = new();
+        public PatientMedicalInfo? PatientMedicalInfo { get; set; }
     }
 }
