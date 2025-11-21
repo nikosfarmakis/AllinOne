@@ -5,13 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AllinOne.Models.SqliteDatabase
 {
-    public abstract class Person
+    public abstract class Person : CommonFields
     {
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
-        [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? UpdatedAt { get; set; }
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; }
