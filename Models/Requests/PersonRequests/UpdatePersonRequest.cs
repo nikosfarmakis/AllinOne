@@ -6,7 +6,7 @@ namespace AllinOne.Models.Requests.PersonRequests
     public abstract class UpdatePersonRequest
     {
         [Required]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; }
@@ -14,10 +14,10 @@ namespace AllinOne.Models.Requests.PersonRequests
         [MaxLength(100)]
         public string LastName { get; set; }
         [MaxLength(13)]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
         [MaxLength(200)]
-        public string Email { get; internal set; }
-        public DateTime DateOfBirth { get; internal set; }
+        public string? Email { get; internal set; }
+        public DateTime? DateOfBirth { get; internal set; }
         public Address? HomeAddress { get; set; }
     }
 }

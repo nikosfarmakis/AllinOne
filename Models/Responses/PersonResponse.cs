@@ -1,19 +1,13 @@
 ﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
-namespace AllinOne.Models.Requests.PersonRequests
+namespace AllinOne.Models.Responses
 {
-    public abstract class CreatePersonRequest
+    public abstract class PersonResponse
     {
-        [Required]
-        [MaxLength(100)]
         public string FirstName { get; set; }
-        [Required]
-        [MaxLength(100)]
         public string LastName { get; set; }
-        [MaxLength(13)]
         public string? Phone { get; set; }
-        [MaxLength(200)]
         public string? Email { get; internal set; }
         public DateTime? DateOfBirth { get; internal set; }
         public Address? HomeAddress { get; set; }

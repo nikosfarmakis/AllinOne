@@ -1,5 +1,6 @@
 ﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace AllinOne.Models.SqliteDatabase
 {
@@ -8,7 +9,8 @@ namespace AllinOne.Models.SqliteDatabase
 
     public class Patient : Person
     {
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
+        [Required]
         public string AMKA { get; set; }
         public PatientMedicalInfo? PatientMedicalInfo { get; set; }
     }
