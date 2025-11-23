@@ -2,7 +2,6 @@
 using AllinOne.Models.Responses;
 using AllinOne.Models.SqliteEntities;
 using AllinOne.Utils.Mappers.Interfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace AllinOne.Utils.Mappers
 {

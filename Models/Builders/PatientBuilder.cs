@@ -4,7 +4,7 @@ using AllinOne.Utils.Extensions;
 
 namespace AllinOne.Models.Builders
 {
-    public class PatientBuilder : PersonBuilder
+    public class PatientBuilder : PersonBuilder<PatientBuilder>
     {
         private string _notes { get; set; }
         private string _AMKA { get; set; }

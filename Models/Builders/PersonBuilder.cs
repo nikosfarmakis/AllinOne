@@ -1,9 +1,13 @@
 ﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
 using AllinOne.Utils.Extensions;
+using Google.Protobuf.WellKnownTypes;
 
 namespace AllinOne.Models.Builders
 {
-    public abstract class PersonBuilder
+    //recursive generic constraint
+    //so that the base builder can return the correct type
+    //without this [where TBuilder : PersonBuilder<TBuilder>]the compiler will return PersonBuilder not UserBuilder
+    public abstract class PersonBuilder<TBuilder> where TBuilder : PersonBuilder<TBuilder> 
     {
         protected string _firstName = string.Empty;
         protected string _lastName = string.Empty;
@@ -14,19 +18,24 @@ namespace AllinOne.Models.Builders
 
         protected readonly List<string> _validationErrors = new();
 
-        public PersonBuilder SetDateOfBirth(DateTime dateOfBirth)
+        public TBuilder SetDateOfBirth(DateTime? dateOfBirth)
         {
-            if (!dateOfBirth.ValidDateOfBirth(out string error))
+            if(dateOfBirth == null)
+            {
+                return (TBuilder)this;
+            }
+
+            if (!dateOfBirth.Value.ValidDateOfBirth(out string error))
             {
                 _validationErrors.Add(error);
             }
             else
             {
-                _dateOfBirth = dateOfBirth;
+                _dateOfBirth = dateOfBirth.Value;
             }
-            return this;
+            return (TBuilder)this;
         }
-        public PersonBuilder SetHomeAddress(Address? homeAddress)
+        public TBuilder SetHomeAddress(Address? homeAddress)
         {
             //TODO Address VALIDATOR
 /*            if (homeAddress == null)
@@ -40,9 +49,9 @@ namespace AllinOne.Models.Builders
 
             _homeAddress = homeAddress;
 
-            return this;
+            return (TBuilder)this;
         }
-        public PersonBuilder SetFirstName(string name)
+        public TBuilder SetFirstName(string name)
         {
             if (!name.IsValidateName("First name", out string error))
             {
@@ -53,10 +62,10 @@ namespace AllinOne.Models.Builders
                 _firstName = name;
             }
 
-            return this;
+            return (TBuilder)this;
         }
 
-        public PersonBuilder SetLastName(string name)
+        public TBuilder SetLastName(string name)
         {
             if (!name.IsValidateName("Last name", out string error))
             {
@@ -67,11 +76,16 @@ namespace AllinOne.Models.Builders
                 _lastName = name;
             }
 
-            return this;
+            return (TBuilder)this;
         }
 
-        public PersonBuilder SetEmail(string email)
+        public TBuilder SetEmail(string? email)
         {
+            if (email.IsNullOrEmptyOrWhitespace())
+            {
+                return (TBuilder)this;
+            }
+
             if (!email.IsValidEmail(out List<string> validationErrors))
             {
                 _validationErrors.AddRange(validationErrors);
@@ -80,10 +94,15 @@ namespace AllinOne.Models.Builders
             {
                 _email = email;
             }
-            return this;
+            return (TBuilder)this;
         }
-        public PersonBuilder SetPhone(string phone)
+        public TBuilder SetPhone(string? phone)
         {
+            if (phone.IsNullOrEmptyOrWhitespace())
+            {
+                return (TBuilder)this;
+            }
+
             if (!phone.IsValidPhone(out string error))
             {
                 _validationErrors.Add(error);
@@ -92,7 +111,7 @@ namespace AllinOne.Models.Builders
             {
                 _phone = phone;
             }
-            return this;
+            return (TBuilder)this;
         }
     }
 }

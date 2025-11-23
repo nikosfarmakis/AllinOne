@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace AllinOne.Models.Builders
 {
-    public class UserBuilder : PersonBuilder
+    public class UserBuilder : PersonBuilder<UserBuilder>
     {   
         private UserRoles _role;
         private string _password;
