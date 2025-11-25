@@ -1,4 +1,4 @@
-﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
+﻿using AllinOne.Models.SqliteDatabase;
 using System.ComponentModel.DataAnnotations;
 
 namespace AllinOne.Models.Requests.PersonRequests
@@ -18,6 +18,5 @@ namespace AllinOne.Models.Requests.PersonRequests
         [MaxLength(200)]
         public string? Email { get; internal set; }
         public DateTime? DateOfBirth { get; internal set; }
-        public Address? HomeAddress { get; set; }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Diagnostics;
-using System.Reflection.PortableExecutable;
+﻿using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -136,6 +134,58 @@ namespace AllinOne.Utils.Helpers
             var key = new byte[32];
             RandomNumberGenerator.Fill(key);
             return Convert.ToBase64String(key);
+        }
+
+        private const int SaltSize = 16; // 128 bit
+        private const int KeySize = 32;  // 256 bit
+        private const int Iterations = 100_000; // safe limit. how many times will it be repeated
+
+        public static string HashPassword(string password)
+        {
+            var salt = new byte[SaltSize];
+            //make random salt
+            RandomNumberGenerator.Fill(salt);
+
+            //PBKDF2
+            //password + salt
+            //calculation HMAC
+            //puts him in the next repetition
+            //he does it 100,000 times
+
+            using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256); 
+            var key = pbkdf2.GetBytes(KeySize);
+            // [4 bytes iterations] + [16 bytes salt] + [32 bytes key]
+            var result = new byte[4 + SaltSize + KeySize];
+            Buffer.BlockCopy(BitConverter.GetBytes(Iterations), 0, result, 0, 4);
+            Buffer.BlockCopy(salt, 0, result, 4, SaltSize);
+            Buffer.BlockCopy(key, 0, result,4+ SaltSize, KeySize);
+
+            //[result] = [4 bytes iterations] + [salt (16 bytes)] + [hash/key (32 bytes)]
+            return Convert.ToBase64String(result);
+        }
+        public static bool VerifyPassword(string password, string hashedPassword)
+        {
+            //extract the bytes from Base64
+            var decoded = Convert.FromBase64String(hashedPassword);
+            //read how many iterations were used then
+            var iterations = BitConverter.ToInt32(decoded, 0);
+
+            var salt = new byte[SaltSize];
+            //get the salt (16 bytes)
+            Buffer.BlockCopy(decoded, 4, salt, 0, SaltSize);
+
+            var storedKey = new byte[KeySize];
+            //get the stored key
+            Buffer.BlockCopy(decoded, 4 + SaltSize, storedKey, 0, KeySize);
+
+            using var pbkdf2 = new Rfc2898DeriveBytes(password, salt, Iterations, HashAlgorithmName.SHA256);
+            var key = pbkdf2.GetBytes(KeySize);
+
+            // compares ALL bytes
+            // always at the same time
+            // does not stop early
+            // does not reveal where the error was
+            return CryptographicOperations.FixedTimeEquals(key, storedKey);
         }
     }
 

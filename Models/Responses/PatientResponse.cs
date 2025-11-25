@@ -1,4 +1,4 @@
-﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
+﻿using AllinOne.Models.SqliteDatabase;
 
 namespace AllinOne.Models.Responses
 {
@@ -6,6 +6,5 @@ namespace AllinOne.Models.Responses
     {
         public string? Notes { get; set; }
         public string AMKA { get; set; }
-        public PatientMedicalInfo? PatientMedicalInfo { get; set; }
     }
 }

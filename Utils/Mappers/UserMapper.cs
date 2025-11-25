@@ -1,4 +1,4 @@
-﻿using AllinOne.Models.Builders;
+﻿using AllinOne.Builders;
 using AllinOne.Models.Configuration;
 using AllinOne.Models.Requests.UserRequests;
 using AllinOne.Models.SqliteDatabase;
@@ -18,7 +18,6 @@ namespace AllinOne.Utils.Mappers
         {
             var builder = new UserBuilder(_passwordOptions);
             var user = builder.SetDateOfBirth(request.DateOfBirth)
-                        .SetHomeAddress(request.HomeAddress)
                         .SetPassword(request.Password)
                         .SetRole(request.Role)
                         .SetFirstName(request.FirstName)

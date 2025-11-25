@@ -1,5 +1,5 @@
 ﻿using AllinOne.Models.Requests.PersonRequests;
-using AllinOne.Models.SqliteDatabase.ValueObjects;
+using AllinOne.Models.SqliteDatabase;
 using System.ComponentModel.DataAnnotations;
 
 namespace AllinOne.Models.Requests.PatientRequests
@@ -9,6 +9,5 @@ namespace AllinOne.Models.Requests.PatientRequests
         public string? Notes { get; set; }
         [Required]
         public string AMKA { get; set; }
-        public PatientMedicalInfo? PatientMedicalInfo { get; set; }
     }
 }

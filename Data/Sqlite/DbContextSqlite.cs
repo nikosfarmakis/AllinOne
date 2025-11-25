@@ -8,71 +8,79 @@ namespace AllinOne.Data.Sqlite
 {
     public class DbContextSqlite : DbContext
     {
-        public DbContextSqlite(DbContextOptions<DbContextSqlite> options) : base(options) 
-        { 
+        public DbContextSqlite(DbContextOptions<DbContextSqlite> options) : base(options)
+        {
 
         }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Patient> Patients { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<MedicalInfo> PatientMedicalInfos { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // converters
-            var encryptStringConverter = new ValueConverter<string, string>(
-                v => AesGcmEncryptionHelper.Encrypt(v),
-                v => AesGcmEncryptionHelper.Decrypt(v)
-);
+            #region Person
+            modelBuilder.Entity<Person>()
+                .HasOne(p => p.Address)
+                .WithOne(a => a.Person)
+                .HasForeignKey<Address>(a => a.PersonId)
+                .OnDelete(DeleteBehavior.Cascade);
+            #endregion
 
-            var encryptIntConverter = new ValueConverter<int, string>(
-                v => AesGcmEncryptionHelper.Encrypt(v.ToString()),
-                v => int.Parse(AesGcmEncryptionHelper.Decrypt(v))
-            );
+            #region Patient
+            modelBuilder.Entity<Patient>()
+                .HasOne(p => p.MedicalInfo)
+                .WithOne(a => a.Patient)
+                .HasForeignKey<MedicalInfo>(a => a.PatientId)
+                .OnDelete(DeleteBehavior.Cascade);
+            #endregion
 
-            var encryptboolConverter = new ValueConverter<bool, string>(
-                v => AesGcmEncryptionHelper.Encrypt(v.ToString()),
-                v => bool.Parse(AesGcmEncryptionHelper.Decrypt(v))
-            );
+            #region Address
+            modelBuilder.Entity<Address>()
+                .HasIndex(a => a.PersonId)
+                .IsUnique();
+            #endregion
+
+            #region MedicalInfo
+            modelBuilder.Entity<MedicalInfo>()
+                .HasIndex(m => m.PatientId)
+                .IsUnique();
+            #endregion
 
             #region User
-
-            modelBuilder.Entity<User>().Property(p => p.Role).HasConversion(encryptStringConverter);
-            modelBuilder.Entity<User>().Property(p => p.Password).HasConversion(encryptStringConverter);
 
             #endregion
 
             #region Person
+            modelBuilder.Entity<Person>().Property(p => p.FirstName).HasConversion(CustomValueConverters.EncryptStringConverter);
+            modelBuilder.Entity<Person>().Property(p => p.LastName).HasConversion(CustomValueConverters.EncryptStringConverter);
+            modelBuilder.Entity<Person>().Property(p => p.Phone).HasConversion(CustomValueConverters.EncryptStringConverter);
+            modelBuilder.Entity<Person>().Property(p => p.Email).HasConversion(CustomValueConverters.EncryptStringConverter);
+            modelBuilder.Entity<Person>().Property(p => p.DateOfBirth).HasConversion(CustomValueConverters.EncryptDateTimeConverter);
+            #endregion
 
-            modelBuilder.Entity<Person>().Property(p => p.Phone).HasConversion(encryptStringConverter);
-            modelBuilder.Entity<Person>().Property(p => p.Email).HasConversion(encryptStringConverter);
-            modelBuilder.Entity<Person>().Property(p => p.DateOfBirth).HasConversion(encryptStringConverter);
-            // Person.HomeAddress
-            modelBuilder.Entity<Person>().OwnsOne(p => p.HomeAddress, ha =>
-            {
-                ha.Property(ha => ha.Street).HasConversion(encryptStringConverter);
-                ha.Property(ha => ha.City).HasConversion(encryptStringConverter);
-                ha.Property(ha => ha.PostalCode).HasConversion(encryptStringConverter);
-            });
-
+            #region HomeAddress
+            modelBuilder.Entity<Address>().Property(ha => ha.Street).HasConversion(CustomValueConverters.EncryptStringConverter);
+            modelBuilder.Entity<Address>().Property(ha => ha.City).HasConversion(CustomValueConverters.EncryptStringConverter);
+            modelBuilder.Entity<Address>().Property(ha => ha.PostalCode).HasConversion(CustomValueConverters.EncryptStringConverter);
+            modelBuilder.Entity<Address>().Property(ha => ha.Country).HasConversion(CustomValueConverters.EncryptStringConverter);
             #endregion
 
             #region Patient
+            modelBuilder.Entity<Patient>().Property(p => p.Notes).HasConversion(CustomValueConverters.EncryptStringConverter);
+            modelBuilder.Entity<Patient>().Property(p => p.AMKA).HasConversion(CustomValueConverters.EncryptStringConverter);
+            #endregion
 
-            modelBuilder.Entity<Patient>().Property(p => p.Notes).HasConversion(encryptStringConverter);
-
-            // Patient.PatientMedicalInfo
-            modelBuilder.Entity<Patient>().OwnsOne(p => p.PatientMedicalInfo, pmi =>
-            {
-                pmi.Property(x => x.DrugAllergiesDescription).HasConversion(encryptStringConverter);
-                pmi.Property(x => x.GeneralAllergiesDescription).HasConversion(encryptStringConverter);
-                pmi.Property(x => x.ChronicConditions).HasConversion(encryptStringConverter);
-                pmi.Property(x => x.PastSurgeries).HasConversion(encryptStringConverter);
-                pmi.Property(x => x.AdditionalNotes).HasConversion(encryptStringConverter);
-                pmi.Property(x => x.CigarettesPerDay).HasConversion(encryptIntConverter);
-                pmi.Property(x => x.DrinksPerWeek).HasConversion(encryptIntConverter);
-            });
-
+            #region PatientMedicalInfo
+            //modelBuilder.Entity<MedicalInfo>().Property(x => x.DrugAllergiesDescription).HasConversion(encryptStringConverter);
+            //modelBuilder.Entity<MedicalInfo>().Property(x => x.GeneralAllergiesDescription).HasConversion(encryptStringConverter);
+            //modelBuilder.Entity<MedicalInfo>().Property(x => x.ChronicConditions).HasConversion(encryptStringConverter);
+            //modelBuilder.Entity<MedicalInfo>().Property(x => x.PastSurgeries).HasConversion(encryptStringConverter);
+            //modelBuilder.Entity<MedicalInfo>().Property(x => x.AdditionalNotes).HasConversion(encryptStringConverter);
+            //modelBuilder.Entity<MedicalInfo>().Property(x => x.CigarettesPerDay).HasConversion(encryptIntConverter);
+            //modelBuilder.Entity<MedicalInfo>().Property(x => x.DrinksPerWeek).HasConversion(encryptIntConverter);
             #endregion
         }
     }

@@ -4,14 +4,13 @@ using AllinOne.Models.SqliteDatabase;
 using AllinOne.Utils.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace AllinOne.Models.Builders
+namespace AllinOne.Builders
 {
     public class UserBuilder : PersonBuilder<UserBuilder>
     {   
         private UserRoles _role;
         private string _password;
         private readonly UserPasswordSection _uPassSection;
-
 
         public UserBuilder(IOptions<UserPasswordSection> userPasswordSection) 
         {
@@ -51,7 +50,6 @@ namespace AllinOne.Models.Builders
                 DateOfBirth = _dateOfBirth,
                 Phone = _phone,
                 Email = _email,
-                HomeAddress = _homeAddress,
                 Role = _role,
                 Password =_password
             };

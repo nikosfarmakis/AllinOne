@@ -11,7 +11,6 @@ namespace AllinOne.Data.Sqlite.Extensions
 
             services.AddDbContext<DbContextSqlite>(options =>
                 options.UseSqlite(connectionString)
-                       //.UseLazyLoadingProxies()
                        );
 
             return services;

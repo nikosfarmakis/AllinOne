@@ -1,4 +1,4 @@
-﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
+﻿using AllinOne.Models.SqliteDatabase;
 using System.ComponentModel.DataAnnotations;
 
 namespace AllinOne.Models.Responses
@@ -10,6 +10,5 @@ namespace AllinOne.Models.Responses
         public string? Phone { get; set; }
         public string? Email { get; internal set; }
         public DateTime? DateOfBirth { get; internal set; }
-        public Address? HomeAddress { get; set; }
     }
 }

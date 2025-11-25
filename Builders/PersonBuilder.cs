@@ -1,8 +1,8 @@
-﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
+﻿using AllinOne.Models.SqliteDatabase;
 using AllinOne.Utils.Extensions;
 using Google.Protobuf.WellKnownTypes;
 
-namespace AllinOne.Models.Builders
+namespace AllinOne.Builders
 {
     //recursive generic constraint
     //so that the base builder can return the correct type
@@ -14,7 +14,6 @@ namespace AllinOne.Models.Builders
         protected string _phone = string.Empty;
         protected string _email = string.Empty;
         protected DateTime _dateOfBirth;
-        protected Address? _homeAddress;
 
         protected readonly List<string> _validationErrors = new();
 
@@ -35,22 +34,7 @@ namespace AllinOne.Models.Builders
             }
             return (TBuilder)this;
         }
-        public TBuilder SetHomeAddress(Address? homeAddress)
-        {
-            //TODO Address VALIDATOR
-/*            if (homeAddress == null)
-            {
-                _validationErrors.Add("Patient home address  cannot be null.");
-            }
-            else
-            {
-                _homeAddress = homeAddress;
-            }*/
 
-            _homeAddress = homeAddress;
-
-            return (TBuilder)this;
-        }
         public TBuilder SetFirstName(string name)
         {
             if (!name.IsValidateName("First name", out string error))

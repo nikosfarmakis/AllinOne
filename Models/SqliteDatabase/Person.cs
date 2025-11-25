@@ -1,11 +1,13 @@
-﻿using AllinOne.Models.SqliteDatabase.ValueObjects;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AllinOne.Models.SqliteDatabase
 {
     public abstract class Person : CommonFields
     {
+        // 1-1 relationship
+        public Address? Address { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; }
@@ -15,9 +17,8 @@ namespace AllinOne.Models.SqliteDatabase
         [MaxLength(13)]
         public string? Phone { get; set; }
         [MaxLength(200)]
-        public string? Email { get; internal set; }
-        public DateTime? DateOfBirth { get; internal set; }
-        public Address? HomeAddress { get; set; }
+        public string? Email { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public bool IsDeleted { get; set; } = false;
         [NotMapped]
         public int? Age
@@ -44,5 +45,4 @@ namespace AllinOne.Models.SqliteDatabase
         //[DatabaseGenerated(DatabaseGeneratedOption.Computed)] //It is at the base //It is automatically calculated by the database every time a SELECT or UPDATE
         public string DisplayName => $"{FirstName} {LastName}";
     }
-
 }

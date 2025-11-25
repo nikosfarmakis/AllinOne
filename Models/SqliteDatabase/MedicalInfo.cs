@@ -3,11 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AllinOne.Models.SqliteDatabase.ValueObjects
+namespace AllinOne.Models.SqliteDatabase
 {
-    [Owned]
-    public class PatientMedicalInfo
+    public class MedicalInfo : CommonFields
     {
+        // 1-1 relationship
+        public Guid PatientId { get; set; } // FK Patient
+        public Patient Patient { get; set; } // navigation
+
         [NotMapped]
         public bool HasDrugAllergies => !DrugAllergiesDescription.IsNullOrEmptyOrWhitespace();
         [MaxLength(2000)]

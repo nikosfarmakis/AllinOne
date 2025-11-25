@@ -1,12 +1,8 @@
 ﻿using AllinOne.Constants;
-using AllinOne.Models.Configuration;
 using AllinOne.Models.Requests.Authorization;
-using AllinOne.Redis.Service.Interfaces;
 using AllinOne.ResultPattern;
-using AllinOne.Services.Implementations;
 using AllinOne.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Extensions;
 
 namespace AllinOne.Controllers

@@ -1,14 +1,12 @@
 ﻿using AllinOne.Models.SqliteDatabase;
-using AllinOne.Models.SqliteDatabase.ValueObjects;
 using AllinOne.Utils.Extensions;
 
-namespace AllinOne.Models.Builders
+namespace AllinOne.Builders
 {
     public class PatientBuilder : PersonBuilder<PatientBuilder>
     {
         private string _notes { get; set; }
         private string _AMKA { get; set; }
-        private PatientMedicalInfo? _patientMedicalInfo { get; set; } = new();
         public PatientBuilder SetNotes(string notes)
         {
             _notes = notes?.Trim();
@@ -26,20 +24,6 @@ namespace AllinOne.Models.Builders
             }
             return this;
         }
-        public PatientBuilder SetPatientMedicalInfo(PatientMedicalInfo? info)
-        {
-            //TODO PatientMedicalInfo VALIDATOR
-            /*            if (info == null)
-                        {
-                            _validationErrors.Add("Patient medical information cannot be null.");
-                        }
-                        else
-                        {
-                            _patientMedicalInfo = info;
-                        }*/
-            _patientMedicalInfo = info;
-            return this;
-        }
 
         public Patient Build()
         {
@@ -55,10 +39,8 @@ namespace AllinOne.Models.Builders
                 DateOfBirth = _dateOfBirth,
                 Phone = _phone,
                 Email = _email,
-                HomeAddress = _homeAddress,
                 Notes = _notes,
-                AMKA = _AMKA,
-                PatientMedicalInfo = _patientMedicalInfo
+                AMKA = _AMKA
             };
         }
     }

@@ -1,11 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace AllinOne.Models.SqliteDatabase.ValueObjects
+namespace AllinOne.Models.SqliteDatabase
 {
-    [Owned] 
-    public class Address
+    public class Address :CommonFields
     {
+        // 1-1 relationship
+        public Guid PersonId { get; set; }   // FK Person
+        public Person Person { get; set; }   // navigation
+
         [MaxLength(200)]
         public string Street { get; set; } = string.Empty;
 
@@ -17,6 +20,7 @@ namespace AllinOne.Models.SqliteDatabase.ValueObjects
 
         [MaxLength(10)]
         public string PostalCode { get; set; } = string.Empty;
+
     }
 }
 
