@@ -8,7 +8,7 @@ namespace AllinOne.Models.Requests.OrdrRequests
     {
         [JsonProperty("descriptionContains")]
         public string? DescriptionContains { get; set; }
-        [JsonProperty("fromCreatedAt ")]
+        [JsonProperty("fromCreatedAt")]
         public DateTime? FromCreatedAt { get; set; }
         [JsonProperty("toCreatedAt")]
         public DateTime? ToCreatedAt { get; set; }
