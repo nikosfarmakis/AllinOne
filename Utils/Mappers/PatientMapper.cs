@@ -1,38 +1,30 @@
 ﻿using AllinOne.Builders;
-using AllinOne.Models.Configuration;
-using AllinOne.Models.Requests.UserRequests;
+using AllinOne.Models.Requests.PatientRequests;
 using AllinOne.Models.Responses;
 using AllinOne.Models.SqliteDatabase;
 using AllinOne.Utils.Mappers.Interfaces;
-using Microsoft.Extensions.Options;
 
 namespace AllinOne.Utils.Mappers
 {
-    public class UserMapper : IEntityMapper<User,UserResponse, CreateUserRequest, UpdateUserRequest>
+    public class PatientMapper : IEntityMapper<Patient, PatientResponse, CreatePatientRequest, UpdatePatientRequest>
     {
-        private readonly IOptions<UserPasswordSection> _passwordOptions;
-
-        public UserMapper(IOptions<UserPasswordSection> passwordOptions)
+        public Patient ToEntity(CreatePatientRequest request)
         {
-            _passwordOptions = passwordOptions;
-        }
-        public User ToEntity(CreateUserRequest request)
-        {
-            var builder = new UserBuilder(_passwordOptions);
+            var builder = new PatientBuilder();
             var user = builder.SetDateOfBirth(request.DateOfBirth)
-                        .SetPassword(request.Password)
-                        .SetRole(request.Role)
                         .SetFirstName(request.FirstName)
                         .SetLastName(request.LastName)
                         .SetEmail(request.Email)
                         .SetPhone(request.Phone)
+                        .SetAMKA(request.AMKA)
+                        .SetNotes(request.Notes)
                         .Build();
             return user;
         }
 
-        public UserResponse ToResponse(User entity)
+        public PatientResponse ToResponse(Patient entity)
         {
-            return new UserResponse
+            return new PatientResponse
             {
                 FirstName = entity.FirstName,
                 LastName = entity.LastName,
@@ -40,18 +32,20 @@ namespace AllinOne.Utils.Mappers
                 Email = entity.Email,
                 DateOfBirth = entity.DateOfBirth,
                 Age = entity.Age,
-                Role = entity.Role,
+                AMKA = entity.AMKA,
+                Notes = entity.Notes
             };
         }
 
-        public void UpdateEntity(UpdateUserRequest request, User entity)
+        public void UpdateEntity(UpdatePatientRequest request, Patient entity)
         {
             entity.FirstName = request.FirstName;
             entity.LastName = request.LastName;
             entity.Phone = request.Phone;
             entity.Email = request.Email;
             entity.DateOfBirth = request.DateOfBirth;
-            entity.Role= request.Role;
+            entity.AMKA = request.AMKA;
+            entity.Notes = request.Notes;
         }
     }
 }

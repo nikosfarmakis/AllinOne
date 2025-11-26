@@ -19,7 +19,6 @@ namespace AllinOne.Models.SqliteDatabase
         [MaxLength(200)]
         public string? Email { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public bool IsDeleted { get; set; } = false;
         [NotMapped]
         public int? Age
         {

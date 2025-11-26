@@ -1,6 +1,4 @@
-﻿using AllinOne.Models.SqliteDatabase;
-
-namespace AllinOne.Models.Responses
+﻿namespace AllinOne.Models.Responses
 {
     public class PatientResponse : PersonResponse
     {

@@ -10,16 +10,16 @@ namespace AllinOne.Models.SqliteDatabase
         public Person Person { get; set; }   // navigation
 
         [MaxLength(200)]
-        public string Street { get; set; } = string.Empty;
+        public string? Street { get; set; } = string.Empty;
 
         [MaxLength(100)]
-        public string City { get; set; } = string.Empty;
+        public string? City { get; set; } = string.Empty;
 
         [MaxLength(50)]
-        public string Country { get; set; } = string.Empty;
+        public string? Country { get; set; } = string.Empty;
 
         [MaxLength(10)]
-        public string PostalCode { get; set; } = string.Empty;
+        public string? PostalCode { get; set; } = string.Empty;
 
     }
 }
