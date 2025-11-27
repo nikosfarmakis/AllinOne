@@ -5,7 +5,7 @@ using AllinOne.Models.SqliteEntities;
 using AllinOne.Redis.Service.Interfaces;
 using AllinOne.Repositories.Sqlite.Interface;
 using AllinOne.ResultPattern;
-using AllinOne.Services.Interfaces;
+using AllinOne.Services.Interfaces.ModelHandlingServices;
 using AllinOne.Utils.Mappers;
 using AllinOne.Utils.Mappers.Interfaces;
 using Microsoft.AspNetCore.Mvc;

@@ -4,12 +4,12 @@ using AllinOne.Models.Responses;
 using AllinOne.Repositories.Sqlite.Interface;
 using AllinOne.ResultPattern;
 using AllinOne.Services.Interfaces;
-using AllinOne.Utils.Mappers;
+using AllinOne.Services.Interfaces.ModelHandlingServices;
 using AllinOne.Utils.Mappers.Interfaces;
 using Microsoft.OpenApi.Extensions;
 using Order = AllinOne.Models.SqliteEntities.Order;
 
-namespace AllinOne.Services.Implementations
+namespace AllinOne.Services.Implementations.ModelHandlingServices
 {
     public class OrderHandlingService : IOrderHandlingService
     {
@@ -19,29 +19,32 @@ namespace AllinOne.Services.Implementations
         private readonly ILogger<OrderHandlingService> _logger;
         private readonly IEntityMapper<Order, OrderResponse, CreateOrderRequest, UpdateOrderRequest> _orderMapper;
 
-        public OrderHandlingService(IOrderRepository orderRepository, IEntityHandlingService<Order,
-            OrderResponse> entityService, IPaginationService<Order> paginationService,
-             IEntityMapper<Order, OrderResponse, CreateOrderRequest, UpdateOrderRequest> orderMapper)
+        public OrderHandlingService(IOrderRepository orderRepository,
+            IEntityHandlingService<Order,OrderResponse> entityService,
+            IPaginationService<Order> paginationService,
+            ILogger<OrderHandlingService> logger,
+            IEntityMapper<Order, OrderResponse, CreateOrderRequest, UpdateOrderRequest> orderMapper)
         {
             _orderRepository = orderRepository;
             _paginationService = paginationService;
             _entityService = entityService;
             _orderMapper = orderMapper;
+            _logger = logger;
         }
 
-        public  Task<ApiResult<OrderResponse>> CreateOrderAsync(CreateOrderRequest request)
+        public  Task<ApiResult<OrderResponse>> CreateModelAsync(CreateOrderRequest request)
         {
             var entity = _orderMapper.ToEntity(request);
             //var entity = request.ToOrderDbModel();
             return  _entityService.CreateAsync(entity, o => _orderMapper.ToResponse(o));
         }
 
-        public  Task<ApiResult<OrderResponse>> GetOrderByIdAsync(Guid id)
+        public  Task<ApiResult<OrderResponse>> GetModelByIdAsync(Guid id)
         {
             return  _entityService.GetByIdAsync(id, o => _orderMapper.ToResponse(o));
         }
 
-        public Task<ApiResult<bool>> DeleteOrderByIdAsync(Guid id)
+        public Task<ApiResult<bool>> DeleteModelByIdAsync(Guid id)
         {
             return _entityService.DeleteByIdAsync(id);
         }
@@ -51,7 +54,7 @@ namespace AllinOne.Services.Implementations
             return _entityService.DeleteAllAsync();
         }
 
-        public Task<ApiResult<OrderResponse>> UpdateOrderAsync(UpdateOrderRequest request)
+        public Task<ApiResult<OrderResponse>> UpdateModelAsync(UpdateOrderRequest request)
         {
             //entity -> Order from UpdateToOrder
             //public static void UpdateToOrder(this UpdateOrderRequest request, Order entity)]
@@ -68,7 +71,7 @@ namespace AllinOne.Services.Implementations
                 }
 
                 //Use pagination service to paginate & project to OrderResponse
-                var paged = await _paginationService.ApplyPaginationAsync<OrderResponse>(query, pagination, filters.SortBy.GetDisplayName(), filters.SortAscending, o => _orderMapper.ToResponse(o));
+                var paged = await _paginationService.ApplyPaginationAsync(query, pagination, filters.SortBy.GetDisplayName(), filters.SortAscending, o => _orderMapper.ToResponse(o));
 
                 return ApiResult<PaginatedResponse<OrderResponse>>.Success(paged);
             }

@@ -4,7 +4,7 @@ using AllinOne.Models.Requests;
 using AllinOne.Models.Requests.OrdrRequests;
 using AllinOne.Models.Responses;
 using AllinOne.ResultPattern;
-using AllinOne.Services.Interfaces;
+using AllinOne.Services.Interfaces.ModelHandlingServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
 
@@ -34,7 +34,7 @@ namespace AllinOne.Controllers
         {
             try
             {
-                var apiResult = await _orderHandlingService.CreateOrderAsync(request);
+                var apiResult = await _orderHandlingService.CreateModelAsync(request);
 
                 if (apiResult.Status)
                 {
@@ -62,7 +62,7 @@ namespace AllinOne.Controllers
         {
             try
             {
-                var apiResult = await _orderHandlingService.GetOrderByIdAsync(id);
+                var apiResult = await _orderHandlingService.GetModelByIdAsync(id);
                 if (apiResult.Status)
                 {
                     return Ok(apiResult);
@@ -92,7 +92,7 @@ namespace AllinOne.Controllers
         {
             try
             {
-                var apiResult = await _orderHandlingService.DeleteOrderByIdAsync(id);
+                var apiResult = await _orderHandlingService.DeleteModelByIdAsync(id);
                 if (apiResult.Status)
                 {
                     return Ok(apiResult);
@@ -145,7 +145,7 @@ namespace AllinOne.Controllers
         {
             try
             {
-                var apiResult = await _orderHandlingService.UpdateOrderAsync(request);
+                var apiResult = await _orderHandlingService.UpdateModelAsync(request);
                 if (apiResult.Status)
                 {
                     return Ok(apiResult);

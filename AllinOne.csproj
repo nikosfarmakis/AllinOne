@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Interfaces\" />
     <Folder Include="logs\" />
     <Folder Include="logs\development\" />
     <Folder Include="logs\efcore\" />
