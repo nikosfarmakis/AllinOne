@@ -5,7 +5,7 @@ namespace AllinOne.Middlewares.Extensions
     public static class MiddlewareExtensions
     {
         // Composite method for call all with line
-        public static IApplicationBuilder UsePipelineMiddlewares(this IApplicationBuilder app)
+        public static IApplicationBuilder UsePipelineMiddlewares(this IApplicationBuilder app) //sync
         {
             //var featureManager = app.ApplicationServices.GetRequiredService<IFeatureManagerSnapshot>();
             var featureManager = app.ApplicationServices.GetRequiredService<IFeatureManager>();
@@ -15,7 +15,12 @@ namespace AllinOne.Middlewares.Extensions
             app.UseMiddleware<CorrelationLoggingMiddleware>();
             app.UseMiddleware<GlobalExceptionMiddleware>();
 
-            if (featureManager.IsEnabledAsync("EnableJwtValidation").Result)
+            var result = featureManager.IsEnabledAsync("EnableJwtValidation");
+
+            // .GetAwaiter().GetResult() -> async to sync.
+            // safe way to call async code synchronously, because it directly returns the actual exception and not AggregateException
+            // you will see exactly the exception thrown by the async method
+            if (featureManager.IsEnabledAsync("EnableJwtValidation").GetAwaiter().GetResult()) 
             {
                 app.UseMiddleware<JwtValidationMiddleware>();
             }

@@ -22,7 +22,7 @@ namespace AllinOne.Middlewares
             IRedisCacheKeyHandlerService redis,
             IOptions<JwtSection> jwtSection,
             ILogger<JwtService> logge,
-            IFeatureManagerSnapshot features)
+            IFeatureManagerSnapshot features)//IFeatureManagerSnapshot -> flags must be the same during a request, snapshot locks feature flags for the entire request
         {
             _next = next;
             _jwtService = jwtService;

@@ -3,24 +3,46 @@ using AllinOne.Models.SqliteEntities;
 using AllinOne.Utils.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.FeatureManagement;
 
 namespace AllinOne.Data.Sqlite
 {
     public class DbContextSqlite : DbContext
     {
-        public DbContextSqlite(DbContextOptions<DbContextSqlite> options) : base(options)
+        private readonly IFeatureManager _features;
+        public DbContextSqlite(DbContextOptions<DbContextSqlite> options,
+            IFeatureManager featureManager) : base(options) // EF is synchronous
         {
-
+            _features = featureManager;
         }
+
         public DbSet<Order> Orders { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<MedicalInfo> PatientMedicalInfos { get; set; }
         public DbSet<Address> Addresses { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            bool encryptionEnabled = _features
+                .IsEnabledAsync("DatabaseEncryption")
+                .ConfigureAwait(false)
+                .GetAwaiter()
+                .GetResult();
+
+            ConfigureRelations(modelBuilder);
+
+            if (encryptionEnabled)
+            {
+                ConfigureEncryptedModel(modelBuilder);
+            }
+            else
+            {
+                ConfigurePlainModel(modelBuilder);
+            }
+        }
+        private void ConfigureRelations(ModelBuilder modelBuilder)
+        {
             #region Person
             modelBuilder.Entity<Person>()
                 .HasOne(p => p.Address)
@@ -48,11 +70,9 @@ namespace AllinOne.Data.Sqlite
                 .HasIndex(m => m.PatientId)
                 .IsUnique();
             #endregion
-
-            #region User
-
-            #endregion
-
+        }
+        private void ConfigureEncryptedModel(ModelBuilder modelBuilder)
+        {
             #region Person
             modelBuilder.Entity<Person>().Property(p => p.FirstName).HasConversion(CustomValueConverters.EncryptStringConverter);
             modelBuilder.Entity<Person>().Property(p => p.LastName).HasConversion(CustomValueConverters.EncryptStringConverter);
@@ -83,5 +103,10 @@ namespace AllinOne.Data.Sqlite
             //modelBuilder.Entity<MedicalInfo>().Property(x => x.DrinksPerWeek).HasConversion(encryptIntConverter);
             #endregion
         }
+        private void ConfigurePlainModel(ModelBuilder modelBuilder)
+        {
+            //use default non-encrypted mapping
+        }
+
     }
 }
