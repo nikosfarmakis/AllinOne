@@ -2,7 +2,7 @@
 
 namespace AllinOne.Models.Requests.OrdrRequests
 {
-    public class UpdateOrderRequest
+    public class UpdateOrderRequest : IUpdateRequest
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AllinOne.Models.Requests.PersonRequests
 {
-    public abstract class UpdatePersonRequest
+    public abstract class UpdatePersonRequest : IUpdateRequest
     {
         [Required]
         public Guid Id { get; set; }

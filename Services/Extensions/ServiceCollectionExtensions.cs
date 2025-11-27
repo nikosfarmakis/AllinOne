@@ -2,7 +2,9 @@
 using AllinOne.MemoryCache.Implementations;
 using AllinOne.MemoryCache.Interfaces;
 using AllinOne.Models.Requests.OrdrRequests;
+using AllinOne.Models.Requests.PatientRequests;
 using AllinOne.Models.Responses;
+using AllinOne.Models.SqliteDatabase;
 using AllinOne.Models.SqliteEntities;
 using AllinOne.Redis.Service.Implementations;
 using AllinOne.Redis.Service.Interfaces;
@@ -37,12 +39,13 @@ namespace AllinOne.Services.Extensions
 
             #region Mappers
             //Transient
-            services.AddTransient<IEntityMapper<Order, OrderResponse, CreateOrderRequest, UpdateOrderRequest>, OrderMapper>(); 
-            #endregion
+            services.AddTransient<IEntityMapper<Order, OrderResponse, CreateOrderRequest, UpdateOrderRequest>, OrderMapper>();
+            services.AddTransient<IEntityMapper<Patient, PatientResponse, CreatePatientRequest, UpdatePatientRequest>, PatientMapper>();
+        #endregion
 
-            #region Pagination Strategies
-            //Scoped
-            services.AddScoped(typeof(IPaginationStrategyFactory<>), typeof(PaginationStrategyFactory<>));
+        #region Pagination Strategies
+        //Scoped
+        services.AddScoped(typeof(IPaginationStrategyFactory<>), typeof(PaginationStrategyFactory<>));
 
             // IKeyedServiceProvider -> DI helper interface IKeyedService =>> public interface IKeyedServiceProvider : IServiceProvider
             // cast IServiceProvider -> IKeyedServiceProvider

@@ -2,13 +2,13 @@
 
 namespace AllinOne.Services.Interfaces
 {
-    public interface IEntityHandlingService<TEntity, TResponse> where TEntity : class
+    public interface IEntityHandlingService<TEntityModel, TModelResponse> where TEntityModel : class
     {
-        Task<ApiResult<TResponse>> CreateAsync(TEntity entity,Func<TEntity, TResponse> mapResponse);
-        Task<ApiResult<TResponse>> GetByIdAsync(Guid id, Func<TEntity, TResponse> mapResponse);
+        Task<ApiResult<TModelResponse>> CreateAsync(TEntityModel entity,Func<TEntityModel, TModelResponse> mapResponse);
+        Task<ApiResult<TModelResponse>> GetByIdAsync(Guid id, Func<TEntityModel, TModelResponse> mapResponse);
         Task<ApiResult<bool>> DeleteByIdAsync(Guid id);
         Task<ApiResult<int>> DeleteAllAsync();
-        Task<ApiResult<TResponse>> UpdateAsync(Guid id, Action<TEntity> applyUpdates, Func<TEntity, TResponse> mapResponse);
+        Task<ApiResult<TModelResponse>> UpdateAsync(Guid id, Action<TEntityModel> applyUpdates, Func<TEntityModel, TModelResponse> mapResponse);
 
     }
 }

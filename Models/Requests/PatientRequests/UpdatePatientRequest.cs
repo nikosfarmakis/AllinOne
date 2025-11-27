@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AllinOne.Models.Requests.PatientRequests
 {
-    public class UpdatePatientRequest : UpdatePersonRequest
+    public class UpdatePatientRequest : UpdatePersonRequest 
     {
         public string? Notes { get; set; }
         [Required]
