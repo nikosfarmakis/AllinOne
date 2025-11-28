@@ -17,7 +17,7 @@ namespace AllinOne.Data.Sqlite
         }
 
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Patient> Patients { get; set; }
+        /*public DbSet<Patient> Patients { get; set; }
         public DbSet<MedicalInfo> PatientMedicalInfos { get; set; }
         public DbSet<Address> Addresses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -106,7 +106,7 @@ namespace AllinOne.Data.Sqlite
         private void ConfigurePlainModel(ModelBuilder modelBuilder)
         {
             //use default non-encrypted mapping
-        }
+        }*/
 
     }
 }

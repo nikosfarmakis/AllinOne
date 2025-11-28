@@ -5,7 +5,7 @@ using AllinOne.Utils.Mappers.Interfaces;
 
 namespace AllinOne.Services.Implementations
 {
-    public class ModelHandlingService<TEntityModel, TCreateModelRequest, TModelResponse, TUpdateModelRequest> :
+    public abstract class ModelHandlingService<TEntityModel, TCreateModelRequest, TModelResponse, TUpdateModelRequest> :
         IModelHandlingService<TCreateModelRequest, TModelResponse, TUpdateModelRequest> where TEntityModel : class
         where TUpdateModelRequest : IUpdateRequest
     {
@@ -43,7 +43,10 @@ namespace AllinOne.Services.Implementations
         {
             //entity -> Order from UpdateToOrder
             //public static void UpdateToOrder(this UpdateOrderRequest request, Order entity)]
-            return _entityService.UpdateAsync(request.Id, entity => _entityMapper.UpdateEntity(request, entity), o => _entityMapper.ToResponse(o));
+            return _entityService.UpdateAsync(
+                request.Id,
+                entity => _entityMapper.UpdateEntity(request, entity),
+                o =>_entityMapper.ToResponse(o));
         }
 
     }

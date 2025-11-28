@@ -45,7 +45,7 @@ namespace AllinOne.Services.Extensions
 
         #region Pagination Strategies
         //Scoped
-        services.AddScoped(typeof(IPaginationStrategyFactory<>), typeof(PaginationStrategyFactory<>));
+            services.AddScoped(typeof(IPaginationStrategyFactory<>), typeof(PaginationStrategyFactory<>));
 
             // IKeyedServiceProvider -> DI helper interface IKeyedService =>> public interface IKeyedServiceProvider : IServiceProvider
             // cast IServiceProvider -> IKeyedServiceProvider
